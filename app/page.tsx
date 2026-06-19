@@ -6,31 +6,25 @@ import { Pitch } from '@/components/pitch'
 import { LoungePanel } from '@/components/lounge-panel'
 
 export default function Page() {
-  const [mounted, setMounted] = useState(false)
+  const [step, setStep] = useState(0)
   const draft = useDraft()
-  
+
   useEffect(() => {
-    setMounted(true)
+    setStep(1) // Sayfa yüklendi
   }, [])
 
-  // 1. Sayfa henüz yüklenmediyse bekle
-  if (!mounted) return <div style={{ color: 'white' }}>Yükleniyor...</div>
-  
-  // 2. Draft verisi (state) henüz oluşmadıysa bekle
-  if (!draft || !draft.state) return <div style={{ color: 'white' }}>Draft verisi hazırlanıyor...</div>
+  if (step === 0) return <div style={{color:'white'}}>Başlatılıyor...</div>
+  if (!draft?.state) return <div style={{color:'white'}}>State bekleniyor...</div>
 
-  // 3. Her şey hazırsa tasarımı göster
   return (
     <div style={{ background: '#0a0a0a', minHeight: '100vh', padding: '20px' }}>
-      <Pitch 
-        state={draft.state} 
-        chemistry={null} 
-        onRemove={draft.removePlayer} 
-        onInfo={() => {}} 
-        currentLang="tr" 
-      />
-      
-      <div style={{ marginTop: '20px' }}>
+      {/* 1. TEST: Pitch hatasız açılıyor mu? */}
+      <div style={{ border: '1px solid #333', marginBottom: '20px' }}>
+        <Pitch state={draft.state} chemistry={null} onRemove={draft.removePlayer} onInfo={() => {}} currentLang="tr" />
+      </div>
+
+      {/* 2. TEST: Panel hatasız açılıyor mu? */}
+      <div style={{ border: '1px solid #333' }}>
         <LoungePanel 
           state={draft.state} 
           onRollPool={draft.rollPool} 
