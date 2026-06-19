@@ -2,7 +2,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export const LobbyScreen = ({ navigation }) => {
+// Sadece bu arayüzü ekle:
+interface Props {
+  navigation: any;
+}
+
+// export kısmını şöyle değiştir:
+export const LobbyScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>DRAFT ARCHIVE</Text>
@@ -15,6 +21,8 @@ export const LobbyScreen = ({ navigation }) => {
     </View>
   );
 };
+
+// ... aşağısı (styles kısmı) aynen kalsın.
 
 const styles = StyleSheet.create({
   container: {
