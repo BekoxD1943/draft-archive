@@ -17,7 +17,6 @@ export default function Page() {
   const draft = useDraft()
   const { state } = draft
   
-  // Güvenli hale getirdik
   const chem = state ? computeChemistry(state) : null
 
   const [modalPlayer, setModalPlayer] = useState<PlacedPlayer | PoolOption | null>(null)
@@ -27,15 +26,31 @@ export default function Page() {
   const [lang, setLang] = useState<Language>('tr')
   const t = translations[lang]
 
-  // --- İSTEDİĞİN GÜNCELLEME BURADA ---
   const squadCount = Object.keys(state?.players || {}).length
-  // ------------------------------------
 
   useEffect(() => {
     if (squadCount === 11) {
       setShowTournament(true)
     }
   }, [squadCount])
+
+  // --- ÇÖKME HATASINI ENGELLEYEN VE AYNI OYUNCUYU ENGELLEYEN FONKSİYON ---
+  const handlePick = (player: PoolOption) => {
+    // 1. Güvenlik Kontrolü: Oyuncu zaten listede mi?
+    const isAlreadySelected = state?.players && Object.values(state.players).some(p => p?.id === player.id)
+    
+    if (isAlreadySelected) {
+      console.log("Bu oyuncu zaten kadroda!")
+      return // İşlemi durdur
+    }
+
+    // 2. İşlemi Güvenle Gerçekleştir
+    try {
+      draft.pickPlayer(player)
+    } catch (error) {
+      console.error("Seçim sırasında hata:", error)
+    }
+  }
 
   const handleCloseTournament = () => {
     setShowTournament(false)
@@ -93,7 +108,7 @@ export default function Page() {
             canRedo={draft.canRedo}
             onFormation={draft.setFormation}
             onRollPool={draft.rollPool}
-            onPick={draft.pickPlayer}
+            onPick={handlePick} // Güncellendi
             onInfo={(p) => setModalPlayer(p)}
             onRollManager={draft.rollManager}
             onSetCaptain={draft.setCaptain}
@@ -116,3 +131,4 @@ export default function Page() {
     </main>
   )
 }
+
