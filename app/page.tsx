@@ -1,69 +1,60 @@
 'use client'
 
+import { useDraft } from '@/hooks/use-draft'
+import { Pitch } from '@/components/pitch'
+import { LoungePanel } from '@/components/lounge-panel'
 import { useState } from 'react'
-import { Trophy, Users, Shield, Sword, RotateCcw } from 'lucide-react'
+import { RotateCcw, Play } from 'lucide-react'
 
 export default function DraftPage() {
+  const draft = useDraft()
+  const [lang, setLang] = useState<'tr' | 'en'>('tr')
+
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 font-sans">
-      {/* ELITE MANAGER SECTION */}
+    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 font-sans max-w-md mx-auto">
+      
+      {/* 1. ELITE MANAGER (20474.jpg aynısı) */}
       <section className="mb-6">
-        <h2 className="text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-2">ELITE MANAGER</h2>
-        <div className="bg-[#1a1a1a] border border-gray-800 rounded-xl p-3 flex items-center justify-between">
+        <h2 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Elite Manager</h2>
+        <div className="bg-[#121212] border border-[#2a2a2a] rounded-2xl p-4 flex items-center justify-between shadow-xl">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">🇧🇷</span>
+            <span className="text-3xl">🇧🇷</span>
             <div>
-              <p className="font-bold">Luiz Felipe Scolari</p>
-              <span className="text-[10px] bg-green-900/30 text-green-400 px-2 py-0.5 rounded">+15 system</span>
+              <h3 className="font-bold text-sm">Luiz Felipe Scolari</h3>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-[9px] bg-emerald-900/50 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-800">+15 SYSTEM</span>
+                <span className="text-[9px] text-gray-400">3-5-2</span>
+              </div>
             </div>
           </div>
-          <button className="flex items-center gap-2 text-xs text-gray-300 bg-[#262626] px-3 py-2 rounded-lg">
-            <RotateCcw size={14} /> Re-roll
+          <button className="bg-[#1e1e1e] p-2 rounded-xl border border-[#333] hover:border-gold transition-colors">
+            <RotateCcw size={16} className="text-gray-400" />
           </button>
         </div>
       </section>
 
-      {/* DRAFT POOL */}
+      {/* 2. DRAFT POOL (20474.jpg aynısı) */}
       <section className="mb-6">
-        <h2 className="text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-2">DRAFT POOL</h2>
-        <div className="bg-[#1a1a1a] border border-gray-800 rounded-xl p-4">
-          <div className="flex gap-2 overflow-x-auto pb-4">
-            {['80s', '90s', '00s', '10s', '20s', 'Nat'].map(t => (
-              <button key={t} className="px-3 py-1 rounded-full bg-[#262626] text-xs text-gray-400">{t}</button>
-            ))}
+        <h2 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Draft Pool</h2>
+        <div className="bg-[#121212] border border-[#2a2a2a] rounded-2xl p-4">
+          <div className="relative mb-4">
+            <input 
+              type="text" 
+              placeholder="Filter: 90s, club teams, Italy..." 
+              className="w-full bg-[#1a1a1a] border border-[#333] rounded-xl py-2 px-4 text-xs focus:outline-none focus:border-yellow-600"
+            />
           </div>
-          
-          <div className="flex items-center justify-between mt-2">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🇩🇪</span>
-              <div>
-                <p className="font-bold text-sm">West Germany</p>
-                <p className="text-[10px] text-gray-500">1990 • NATIONAL</p>
-              </div>
-            </div>
-            <button className="text-[10px] bg-[#262626] px-4 py-1.5 rounded-md text-gray-300">DRAFT POOL</button>
-          </div>
+          <button className="w-full bg-[#eab308]/10 border border-[#eab308]/30 text-yellow-600 font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2">
+            <Play size={12} fill="currentColor" /> ROLL
+          </button>
         </div>
       </section>
 
-      {/* LIVE STATS */}
-      <section>
-        <h2 className="text-gray-400 text-[10px] font-bold uppercase tracking-wider mb-2">LIVE ADVANCED STATS</h2>
-        <div className="grid grid-cols-4 gap-2">
-          {[
-            { icon: Trophy, val: '93.0', label: 'OVR' },
-            { icon: Sword, val: '95', label: 'ATK' },
-            { icon: Shield, val: '94', label: 'DEF' },
-            { icon: Users, val: '5/11', label: 'SQUAD' }
-          ].map((stat, i) => (
-            <div key={i} className="bg-[#1a1a1a] border border-gray-800 p-2 rounded-xl text-center">
-              <stat.icon className="mx-auto text-gray-500 mb-1" size={16} />
-              <p className="font-bold text-sm">{stat.val}</p>
-              <p className="text-[9px] text-gray-500 uppercase">{stat.label}</p>
-            </div>
-          ))}
-        </div>
+      {/* 3. PITCH VE DİĞERLERİ (Senin bileşenlerin burada çalışacak) */}
+      <section className="mt-6">
+        <Pitch state={draft.state} chemistry={null} onRemove={draft.removePlayer} />
       </section>
+
     </div>
   )
 }
