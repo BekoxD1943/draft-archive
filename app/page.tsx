@@ -29,6 +29,16 @@ export default function Page() {
     </div>
   )
   // -------------------
+// Coin ve skor state'leri
+const [coins, setCoins] = useState(0)
+const [leaderboard, setLeaderboard] = useState<{name: string, score: number}[]>([])
+
+// Trivia sonunda çağırılacak fonksiyon
+const updateLeaderboard = (score: number) => {
+  setCoins(c => c + (score * 10)) // Her doğru cevap 10 coin
+  // Basit sıralama mantığı
+  setLeaderboard(prev => [...prev, { name: "Oyuncu", score }].sort((a, b) => b.score - a.score).slice(0, 5))
+}
 
   // ... (Geri kalan kodların, yani view state'i, draft değişkeni vb. buranın altında aynen duracak)
   const [view, setView] = useState<'lobby' | 'draft' | 'trivia'>('lobby')
