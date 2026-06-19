@@ -1,25 +1,19 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { useState, useEffect } from 'react'
-
-// Bileşeni doğru şekilde çağırıyoruz
-const DraftContent = dynamic(() => import('@/components/draft-content'), { ssr: false })
+import { useDraft } from '@/hooks/use-draft'
 
 export default function Page() {
-  const [isClient, setIsClient] = useState(false)
-
+  const [mounted, setMounted] = useState(false)
+  const draft = useDraft()
+  
   useEffect(() => {
-    setIsClient(true)
+    setMounted(true)
   }, [])
 
-  if (!isClient) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center text-gold">
-        YÜKLENİYOR...
-      </div>
-    )
-  }
-
-  return <DraftContent />
+  if (!mounted) return <div style={{color: 'white', padding: '20px'}}>Yükleniyor...</div>
+  
+  // Eğer buraya kadar geldiysek, sayfa en azından boş bir ekranla bile olsa açılmalı.
+  // Eğer bu açılırsa, o zaman "draft-content" kısmına döneriz.
+  return <div style={{color: 'white', padding: '20px'}}>Test Ekranı: {draft ? 'Draft Hazır' : 'Draft Yüklenemedi'}</div>
 }
