@@ -78,33 +78,27 @@ const updateLeaderboard = (score: number) => {
     <main className="min-h-screen bg-carbon text-gold">
       {/* 1. LOBİ EKRANI */}
       {view === 'lobby' && (
-  <div className="flex flex-col items-center justify-center min-h-screen gap-8 p-6">
-    
-    {/* Coin ve Liderlik Paneli */}
-    <div className="flex gap-4 w-full max-w-2xl justify-center">
-      <div className="px-6 py-2 glass-strong rounded-full border border-gold/30 text-gold font-bold">
-        💰 Coin: {coins}
-      </div>
-      <div className="px-6 py-2 glass-strong rounded-full border border-gold/30 text-gold font-bold">
-        🏆 İlk 5: {leaderboard.length}
-      </div>
+  <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-6 text-gold">
+    {/* Üst Panel */}
+    <div className="flex gap-4 mb-12">
+      <div className="bg-neutral-900 px-6 py-3 rounded-full border border-gold/30 shadow-[0_0_15px_rgba(212,175,55,0.2)]">💰 {coins} COIN</div>
+      <div className="bg-neutral-900 px-6 py-3 rounded-full border border-gold/30 shadow-[0_0_15px_rgba(212,175,55,0.2)]">🏆 LİDERLİK</div>
     </div>
 
-    <h1 className="text-4xl font-black uppercase tracking-widest">DRAFT ARCHIVE</h1>
+    <h1 className="text-5xl font-black italic tracking-tighter mb-16 text-transparent bg-clip-text bg-gradient-to-b from-gold to-yellow-700">DRAFT ARCHIVE</h1>
     
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
-      <button onClick={() => setView('draft')} className="p-8 glass-strong rounded-2xl flex flex-col items-center gap-4 hover:bg-gold/10 transition border border-gold/30">
-        <PlayCircle size={48} />
-        <span className="text-xl font-bold">DRAFT SALONU</span>
+    <div className="grid grid-cols-1 w-full max-w-sm gap-6">
+      <button onClick={() => setView('draft')} className="relative p-8 bg-neutral-900 border border-gold/30 rounded-3xl overflow-hidden group">
+        <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <span className="text-2xl font-black tracking-widest uppercase">Draft Salonu</span>
       </button>
-      <button onClick={() => setView('trivia')} className="p-8 glass-strong rounded-2xl flex flex-col items-center gap-4 hover:bg-gold/10 transition border border-gold/30">
-        <Trophy size={48} />
-        <span className="text-xl font-bold">TRIVIA OYUNU</span>
+      <button onClick={() => setView('trivia')} className="relative p-8 bg-neutral-900 border border-gold/30 rounded-3xl overflow-hidden group">
+        <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <span className="text-2xl font-black tracking-widest uppercase">Trivia Oyunu</span>
       </button>
     </div>
   </div>
 )}
-
 
       {/* 2. DRAFT EKRANI (Orijinal Kodun Tamamı Burada) */}
       {view === 'draft' && (
