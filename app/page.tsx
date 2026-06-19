@@ -27,7 +27,6 @@ export default function Page() {
   const draft = useDraft()
   const { state } = draft
   const chem = state ? computeChemistry(state) : null
-  const t = translations[lang]
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000)
@@ -38,11 +37,6 @@ export default function Page() {
   useEffect(() => {
     if (squadCount === 11) setShowTournament(true)
   }, [squadCount])
-
-  const updateLeaderboard = (score: number) => {
-    setCoins(c => c + (score * 10))
-    setLeaderboard(prev => [...prev, { name: "Oyuncu", score }].sort((a, b) => b.score - a.score).slice(0, 5))
-  }
 
   const handlePick = (player: PoolOption) => {
     const isAlreadySelected = state?.players && Object.values(state.players).some(p => p?.id === player.id)
