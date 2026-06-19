@@ -15,6 +15,26 @@ import { translations, type Language } from '@/lib/languages'
 import { Trivia } from '@/components/trivia'
 
 export default function Page() {
+  // --- BURAYA EKLE ---
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-carbon text-gold font-black text-4xl animate-pulse">
+      DRAFT ARCHIVE
+    </div>
+  )
+  // -------------------
+
+  // ... (Geri kalan kodların, yani view state'i, draft değişkeni vb. buranın altında aynen duracak)
+  const [view, setView] = useState<'lobby' | 'draft' | 'trivia'>('lobby')
+  const draft = useDraft()
+  // ...
+
   const [view, setView] = useState<'lobby' | 'draft' | 'trivia'>('lobby')
   
   // --- Orijinal Draft Hook ve State ---
