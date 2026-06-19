@@ -11,30 +11,32 @@ import { PlayerModal } from '@/components/player-modal'
 import { ResumeAlert } from '@/components/resume-alert'
 import { Tournament } from '@/components/tournament'
 import { ExportCard } from '@/components/export-card'
-import { translations, type Language } from '@/lib/languages' // Dil dosyamızı ekliyoruz
+import { translations, type Language } from '@/lib/languages'
 
 export default function Page() {
   const draft = useDraft()
   const { state } = draft
-  const chem = computeChemistry(state)
+  
+  // Güvenli hale getirdik
+  const chem = state ? computeChemistry(state) : null
 
   const [modalPlayer, setModalPlayer] = useState<PlacedPlayer | PoolOption | null>(null)
   const [showTournament, setShowTournament] = useState(false)
   const [showExport, setShowExport] = useState(false)
   
-  // Dil durumunu (State) burada tutuyoruz, varsayılan 'tr' (Türkçe) yaptık
   const [lang, setLang] = useState<Language>('tr')
   const t = translations[lang]
 
-  // 11 Oyuncu tamamlandığında otomatik olarak turnuva ekranını tetikler
-  const squadCount = Object.keys(state.players).length
+  // --- İSTEDİĞİN GÜNCELLEME BURADA ---
+  const squadCount = Object.keys(state?.players || {}).length
+  // ------------------------------------
+
   useEffect(() => {
     if (squadCount === 11) {
       setShowTournament(true)
     }
   }, [squadCount])
 
-  // Turnuvadan çıkarken tüm draftı temizler ve sıfırlar
   const handleCloseTournament = () => {
     setShowTournament(false)
     draft.reset() 
@@ -42,7 +44,6 @@ export default function Page() {
 
   return (
     <main className="min-h-screen px-3 py-4 md:px-6 md:py-6">
-      {/* Üst Bar: Başlık ve Yeni Eklenen Dil Butonu */}
       <header className="mx-auto mb-5 flex max-w-7xl flex-col items-center justify-between gap-4 border-b border-gold/10 pb-4 sm:flex-row sm:text-left">
         <div className="flex flex-col items-center gap-1 sm:items-start">
           <div className="flex items-center gap-2">
@@ -57,7 +58,6 @@ export default function Page() {
           </p>
         </div>
 
-        {/* Canavar gibi dinamik TR / EN Değiştirme Butonu */}
         <button
           onClick={() => setLang(lang === 'tr' ? 'en' : 'tr')}
           className="flex items-center gap-2 rounded-xl border border-gold/30 bg-carbon/60 px-4 py-2 text-xs font-bold text-gold backdrop-blur-sm transition hover:border-gold/80 hover:bg-gold/10 active:scale-95"
@@ -70,7 +70,6 @@ export default function Page() {
       <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[1fr_400px]">
         <section className="order-2 lg:order-1">
           <div className="glass-strong rounded-2xl p-4 md:p-6">
-            {/* Sahaya (Pitch) aktif dili gönderiyoruz */}
             <Pitch
               state={state}
               chemistry={chem}
@@ -87,7 +86,6 @@ export default function Page() {
               {t.loungeTitle}
             </h2>
           </div>
-          {/* Sağ Panele (LoungePanel) aktif dili gönderiyoruz */}
           <LoungePanel
             state={state}
             rolling={draft.rolling}
@@ -111,7 +109,6 @@ export default function Page() {
         </section>
       </div>
 
-      {/* Modallara da dil desteği veriyoruz */}
       <PlayerModal player={modalPlayer} onClose={() => setModalPlayer(null)} currentLang={lang} />
       {draft.showResume && <ResumeAlert onResume={draft.resume} onDismiss={draft.dismissResume} />}
       {showTournament && <Tournament state={state} onClose={handleCloseTournament} currentLang={lang} />}
