@@ -1,10 +1,10 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useState, useEffect } from 'react'
 
-// Tüm ana bileşenleri en son aşamada, sadece client-side'da yükle
+// Bileşeni doğru şekilde çağırıyoruz
 const DraftContent = dynamic(() => import('@/components/draft-content'), { ssr: false })
-import dynamic from 'next/dynamic'
 
 export default function Page() {
   const [isClient, setIsClient] = useState(false)
@@ -15,7 +15,7 @@ export default function Page() {
 
   if (!isClient) {
     return (
-      <div style={{ background: '#0a0a0a', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'gold' }}>
+      <div className="min-h-screen bg-black flex items-center justify-center text-gold">
         YÜKLENİYOR...
       </div>
     )
