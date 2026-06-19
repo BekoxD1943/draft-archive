@@ -78,27 +78,36 @@ const updateLeaderboard = (score: number) => {
     <main className="min-h-screen bg-carbon text-gold">
       {/* 1. LOBİ EKRANI */}
       {view === 'lobby' && (
-  <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6">
-    {/* VIP Panel - Coin ve Rank */}
-    <div className="flex gap-6 mb-12">
-      <div className="flex items-center gap-2 px-6 py-3 bg-neutral-900 border border-gold/40 rounded-full text-gold font-bold shadow-2xl">
-        <Gem size={18} /> {coins} COIN
+  <div{/* 1. LOBİ EKRANI - PREMIUM YAPI */}
+{view === 'lobby' && (
+  <div className="min-h-screen bg-black flex flex-col items-center justify-center p-8">
+    
+    {/* Üstte VIP Statü Paneli */}
+    <div className="flex gap-4 mb-16">
+      <div className="px-6 py-2 bg-neutral-900 border border-gold/40 rounded-full flex items-center gap-2">
+        <span className="text-gold font-bold">💰 {coins} COIN</span>
       </div>
-      <div className="px-6 py-3 bg-neutral-900 border border-gold/40 rounded-full text-gold font-bold shadow-2xl">
-        #1 RANKING
+      <div className="px-6 py-2 bg-neutral-900 border border-gold/40 rounded-full">
+        <span className="text-gold font-bold">🏆 #{leaderboard.length > 0 ? '1' : '0'}</span>
       </div>
     </div>
 
-    <h1 className="text-4xl font-black text-gold tracking-tighter mb-12 italic border-b border-gold/20 pb-4">DRAFT ARCHIVE</h1>
+    {/* Başlık */}
+    <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-gold to-yellow-700 italic tracking-tighter mb-16">
+      DRAFT ARCHIVE
+    </h1>
 
-    <div className="w-full max-w-xs space-y-4">
-      {[ { label: 'DRAFT', action: () => setView('draft') }, 
-         { label: 'TRIVIA OYUNU', action: () => setView('trivia') } ].map((item) => (
-        <button key={item.label} onClick={item.action} 
-          className="w-full py-6 bg-gradient-to-br from-neutral-900 to-black border border-gold/30 rounded-2xl hover:scale-[1.02] transition-transform duration-300 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-          <span className="text-gold font-bold tracking-widest">{item.label}</span>
-        </button>
-      ))}
+    {/* Ana Butonlar */}
+    <div className="w-full max-w-sm space-y-4">
+      <button onClick={() => setView('draft')} className="w-full p-6 bg-neutral-900 border border-gold/30 rounded-2xl flex items-center justify-between group hover:border-gold transition-all shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+        <span className="text-gold font-black tracking-widest uppercase">Draft Salonu</span>
+        <PlayCircle className="text-gold group-hover:scale-110 transition-transform" />
+      </button>
+
+      <button onClick={() => setView('trivia')} className="w-full p-6 bg-neutral-900 border border-gold/30 rounded-2xl flex items-center justify-between group hover:border-gold transition-all shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+        <span className="text-gold font-black tracking-widest uppercase">Trivia Oyunu</span>
+        <Trophy className="text-gold group-hover:scale-110 transition-transform" />
+      </button>
     </div>
   </div>
 )}
