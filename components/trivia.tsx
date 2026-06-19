@@ -1,45 +1,37 @@
 'use client'
 
-import { useState } from 'react'
-import { Trophy, RefreshCw, CheckCircle, XCircle } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Trophy } from 'lucide-react'
 
-const questions = [
-  { q: "Mourinho hangi takımla ilk Şampiyonlar Ligi'ni kazandı?", a: ["Porto", "Chelsea", "Real Madrid", "Inter"], correct: 0 },
-  { q: "Ronaldo futbola hangi takımda başladı?", a: ["Sporting CP", "Manchester United", "Real Madrid", "Juventus"], correct: 0 },
-  { q: "1986 Dünya Kupası'nı hangi ülke kazanmıştır?", a: ["Brezilya", "Almanya", "Arjantin", "İtalya"], correct: 2 }
-]
+const quizData = {
+  'Genel Futbol': [
+    { q: "Mourinho ilk Şampiyonlar Ligi'ni hangi takımla kazandı?", a: ["Porto", "Chelsea", "Real Madrid"], correct: 0 },
+  ],
+  'Fenerbahçe': [
+    { q: "Fenerbahçe'nin unutulmaz efsanesi Alex de Souza kaç yıl formamızı giydi?", a: ["8", "6", "10"], correct: 0 },
+  ]
+}
 
 export function Trivia({ onBack }: { onBack: () => void }) {
+  const [category, setCategory] = useState<keyof typeof quizData | null>(null)
   const [current, setCurrent] = useState(0)
   const [score, setScore] = useState(0)
-  const [showResult, setShowResult] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(15)
 
-  const handleAnswer = (index: number) => {
-    if (index === questions[current].correct) setScore(score + 1)
-    if (current + 1 < questions.length) setCurrent(current + 1)
-    else setShowResult(true)
-  }
+  useEffect(() => {
+    if (!category || timeLeft === 0) return
+    const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000)
+    return () => clearInterval(timer)
+  }, [timeLeft, category])
 
-  return (
-    <div className="glass-strong rounded-2xl p-6 text-gold max-w-lg mx-auto border border-gold/20">
-      {!showResult ? (
-        <>
-          <h2 className="text-xl font-bold mb-6">{questions[current].q}</h2>
-          <div className="grid gap-3">
-            {questions[current].a.map((opt, i) => (
-              <button key={i} onClick={() => handleAnswer(i)} className="p-4 rounded-xl border border-gold/30 hover:bg-gold/10 transition">
-                {opt}
-              </button>
-            ))}
-          </div>
-        </>
-      ) : (
-        <div className="text-center">
-          <Trophy className="w-16 h-16 mx-auto mb-4 text-gold" />
-          <h2 className="text-2xl font-bold">Skorun: {score} / {questions.length}</h2>
-          <button onClick={onBack} className="mt-6 px-6 py-2 bg-gold/20 rounded-lg">Ana Menüye Dön</button>
-        </div>
-      )}
+  if (!category) return (
+    <div className="glass-strong p-6 rounded-2xl">
+      <h2 className="text-xl font-bold mb-4">Kategori Seç</h2>
+      {Object.keys(quizData).map(cat => (
+        <button key={cat} onClick={() => setCategory(cat as any)} className="block w-full p-4 mb-2 border rounded-xl">{cat}</button>
+      ))}
     </div>
   )
+
+  // ... (Soru mantığı buraya gelecek)
 }
