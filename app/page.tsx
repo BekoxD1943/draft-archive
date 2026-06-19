@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic' // <--- BU SATIR BUILD HATASINI KESER
+
 import { useState } from 'react'
 import { useDraft } from '@/hooks/use-draft'
 import { Pitch } from '@/components/pitch'
@@ -8,16 +10,19 @@ import { RotateCcw, Trophy, Shield, Sword, Users } from 'lucide-react'
 
 export default function Page() {
   const draft = useDraft()
-  const { state } = draft
+  const state = draft?.state
 
-  // GÜVENLİK KONTROLÜ: Eğer state henüz oluşmadıysa boş ekran döndür
   if (!state) {
-    return <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-gray-500">Yükleniyor...</div>
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center text-gold font-bold">
+        YÜKLENİYOR...
+      </div>
+    )
   }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white p-4 font-sans max-w-md mx-auto">
-      {/* 1. ELITE MANAGER */}
+      {/* ELITE MANAGER */}
       <section className="mb-6">
         <h2 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">ELITE MANAGER</h2>
         <div className="bg-[#121212] border border-[#2a2a2a] rounded-2xl p-4 flex items-center justify-between">
@@ -34,27 +39,15 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 2. STATS */}
-      <section className="mb-6">
-        <h2 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">LIVE ADVANCED STATS</h2>
-        <div className="grid grid-cols-4 gap-2">
-          <div className="bg-[#121212] border border-[#2a2a2a] p-2 rounded-xl text-center">
-            <Trophy className="mx-auto text-gray-500 mb-1" size={14} />
-            <p className="font-bold text-xs">{state.rating || 0}</p>
-            <p className="text-[8px] text-gray-500 uppercase">OVR</p>
-          </div>
-          {/* Diğer statlar... */}
-          <div className="bg-[#121212] border border-[#2a2a2a] p-2 rounded-xl text-center">
-             <Users className="mx-auto text-gray-500 mb-1" size={14} />
-             <p className="font-bold text-xs">{Object.keys(state.players || {}).length}/11</p>
-             <p className="text-[8px] text-gray-500 uppercase">SQUAD</p>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. SAHA VE PANEL */}
+      {/* SAHA VE PANEL */}
       <div className="space-y-6">
-        <Pitch state={state} chemistry={null} onRemove={draft.removePlayer} onInfo={() => {}} currentLang="tr" />
+        <Pitch 
+          state={state} 
+          chemistry={null} 
+          onRemove={draft.removePlayer} 
+          onInfo={() => {}} 
+          currentLang="tr" 
+        />
         <div className="bg-[#121212] border border-[#2a2a2a] rounded-2xl p-4">
           <LoungePanel 
             state={state} 
