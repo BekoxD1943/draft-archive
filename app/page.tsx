@@ -78,27 +78,31 @@ const updateLeaderboard = (score: number) => {
     <main className="min-h-screen bg-carbon text-gold">
       {/* 1. LOBİ EKRANI */}
       {view === 'lobby' && (
-  <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center p-6 text-gold">
-    {/* Üst Panel */}
-    <div className="flex gap-4 mb-12">
-      <div className="bg-neutral-900 px-6 py-3 rounded-full border border-gold/30 shadow-[0_0_15px_rgba(212,175,55,0.2)]">💰 {coins} COIN</div>
-      <div className="bg-neutral-900 px-6 py-3 rounded-full border border-gold/30 shadow-[0_0_15px_rgba(212,175,55,0.2)]">🏆 LİDERLİK</div>
+  <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6">
+    {/* VIP Panel - Coin ve Rank */}
+    <div className="flex gap-6 mb-12">
+      <div className="flex items-center gap-2 px-6 py-3 bg-neutral-900 border border-gold/40 rounded-full text-gold font-bold shadow-2xl">
+        <Gem size={18} /> {coins} COIN
+      </div>
+      <div className="px-6 py-3 bg-neutral-900 border border-gold/40 rounded-full text-gold font-bold shadow-2xl">
+        #1 RANKING
+      </div>
     </div>
 
-    <h1 className="text-5xl font-black italic tracking-tighter mb-16 text-transparent bg-clip-text bg-gradient-to-b from-gold to-yellow-700">DRAFT ARCHIVE</h1>
-    
-    <div className="grid grid-cols-1 w-full max-w-sm gap-6">
-      <button onClick={() => setView('draft')} className="relative p-8 bg-neutral-900 border border-gold/30 rounded-3xl overflow-hidden group">
-        <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <span className="text-2xl font-black tracking-widest uppercase">Draft Salonu</span>
-      </button>
-      <button onClick={() => setView('trivia')} className="relative p-8 bg-neutral-900 border border-gold/30 rounded-3xl overflow-hidden group">
-        <div className="absolute inset-0 bg-gold/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <span className="text-2xl font-black tracking-widest uppercase">Trivia Oyunu</span>
-      </button>
+    <h1 className="text-4xl font-black text-gold tracking-tighter mb-12 italic border-b border-gold/20 pb-4">DRAFT ARCHIVE</h1>
+
+    <div className="w-full max-w-xs space-y-4">
+      {[ { label: 'DRAFT', action: () => setView('draft') }, 
+         { label: 'TRIVIA OYUNU', action: () => setView('trivia') } ].map((item) => (
+        <button key={item.label} onClick={item.action} 
+          className="w-full py-6 bg-gradient-to-br from-neutral-900 to-black border border-gold/30 rounded-2xl hover:scale-[1.02] transition-transform duration-300 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+          <span className="text-gold font-bold tracking-widest">{item.label}</span>
+        </button>
+      ))}
     </div>
   </div>
 )}
+
 
       {/* 2. DRAFT EKRANI (Orijinal Kodun Tamamı Burada) */}
       {view === 'draft' && (
